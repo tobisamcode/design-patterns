@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { ControlledFlow, UncontrolledFlow } from "./components/controlled-flow";
+import { ControlledFlow } from "./components/controlled-flow";
 
 const Step1 = ({ goNext }) => {
   return (

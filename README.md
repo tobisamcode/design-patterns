@@ -216,5 +216,109 @@ export const UserInfoForm = includeUpdatableResource(
 
 
 
+## 4 - Custom Hooks in React
+
+## What Are Custom Hooks?
+Custom hooks in React are **reusable functions** that encapsulate **stateful logic** and can be shared across multiple components. They allow you to extract common logic from components and reuse it, making your code more readable and maintainable.
+
+A **custom hook** is simply a **JavaScript function** that follows the **React hook naming convention**, meaning it **must start with** `use`, like `useCustomHook()`. It can use built-in hooks like `useState`, `useEffect`, etc.
+
+---
+
+## Main Goal of Custom Hooks
+The **primary goal** of custom hooks is to **encapsulate and reuse complex logic** across multiple components. This helps in:
+
+✅ **Code Reusability** → Avoid repeating the same logic in multiple components.  
+✅ **Separation of Concerns** → Keep UI components clean by moving logic to hooks.  
+✅ **Better Readability & Maintainability** → Easier to understand and manage.  
+✅ **Avoiding Component Bloat** → Components remain focused on rendering, not handling logic.  
+✅ **Easy Testing** → Custom hooks can be tested independently.  
+
+---
+
+## Example: Custom Hook (`useFetch`) for Fetching Data
+Instead of writing API fetching logic in multiple components, you can extract it into a **custom hook**.
+
+```javascript
+import { useState, useEffect } from "react";
+
+function useFetch(url) {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("Error fetching data");
+                const result = await response.json();
+                setData(result);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchData();
+    }, [url]);
+
+    return { data, loading, error };
+}
+
+export default useFetch;
+```
+
+---
+
+## How to Use `useFetch` Hook in a Component
+```javascript
+import React from "react";
+import useFetch from "./useFetch";
+
+function UsersList() {
+    const { data, loading, error } = useFetch("https://jsonplaceholder.typicode.com/users");
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+
+    return (
+        <ul>
+            {data.map(user => (
+                <li key={user.id}>{user.name}</li>
+            ))}
+        </ul>
+    );
+}
+
+export default UsersList;
+```
+
+---
+
+## When Should You Use Custom Hooks?
+Use custom hooks when:
+- You need to **reuse logic** across multiple components.
+- Your **component is getting too complex** with state and effects.
+- You want to **abstract API calls, authentication logic, form handling**, etc.
+
+---
+
+## Summary
+🔹 **Custom hooks** extract and reuse logic across multiple components.  
+🔹 They **must start with "use"** and can use other hooks inside.  
+🔹 Help with **reusability, separation of concerns, and maintainability**.  
+🔹 Example: `useFetch()` for API requests, `useLocalStorage()` for storage, `useDarkMode()` for themes, etc.  
+
+---
+
+## License
+This project is licensed under the MIT License.
+
+
+
+
+
 
 

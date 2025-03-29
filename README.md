@@ -552,4 +552,86 @@ const App = () => (
 
 ---
 
+## 7 - Partial Components in React
+
+## **What are Partial Components?**
+
+Partial components are **smaller subcomponents** within a larger component that **handle a specific part of the UI**. This helps in breaking down complex components into smaller, reusable pieces.
+
+## **Why Use Partial Components?**
+
+- ✅ **Encapsulation** → Each component handles a specific UI section.
+- ✅ **Reusability** → Components can be reused in different contexts.
+- ✅ **Scalability** → UI updates only require changes in specific components.
+
+---
+
+## **Example: Using Partial Components in a Card Component**
+
+### **Step 1: Define a Partial Components**
+
+```js
+export const partialComponent = (Component, partialProps) => {
+  return (props) => {
+    return <Component {...props} {...partialProps} />;
+  };
+};
+
+export const Button = ({ size, text, color, ...props }) => {
+  return (
+    <button
+      style={{
+        fontSize: size === "small" ? "10px" : "32px",
+        backgroundColor: color,
+      }}
+    >
+      {text}
+    </button>
+  );
+};
+```
+
+### **Step 2: Combine Partial Components in a Parent Component**
+
+```javascript
+export const RedButton = partialComponent(Button, { color: "red" });
+export const SmallRedButton = partialComponent(RedButton, { size: "small" });
+export const SmallGreenButton = partialComponent(Button, {
+  color: "green",
+  size: "small",
+});
+```
+
+### **Step 3: Use the Card Component**
+
+```javascript
+const App = () => {
+  return (
+    <div>
+      <SmallRedButton text="I am a small red button" />
+    </div>
+  );
+};
+```
+
+---
+
+## **How Partial Components Improve Composition Flow**
+
+1. **Encapsulation** → Each component handles only one part of the UI (`CardHeader`, `CardBody`, `CardFooter`).
+2. **Reusability** → The same partial components can be reused in different contexts.
+3. **Scalability** → If the UI changes, we only need to update individual partial components.
+
+---
+
+## **When to Use Partial Components?**
+
+✅ When a component **has distinct sections** (e.g., headers, footers, lists).  
+✅ When **multiple components share a similar structure**.  
+✅ When you want to **improve readability** in large components.
+
+❌ **Avoid Over-Fracturing** → If a component is too simple, breaking it down may add unnecessary complexity.
+
+---
+
 ### 🚀 **Happy Coding!**

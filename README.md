@@ -428,3 +428,128 @@ Each recursive `<Comment>` component **renders itself inside itself** for replie
 ## License
 
 This project is licensed under the MIT License.
+
+## 6 - Composition Components in React
+
+This document explains how **composition** works in React and provides an example of using composition to structure components efficiently.
+
+## What is Component Composition?
+
+Component composition is the practice of **combining smaller components** to build a larger, reusable UI. Instead of using inheritance, React encourages composition to keep components flexible and maintainable.
+
+### **Why Use Composition?**
+
+- **Encapsulation** → Each component handles its own logic.
+- **Reusability** → Components can be reused in different contexts.
+- **Flexibility** → Easily swap or extend functionalities without modifying existing code.
+
+---
+
+## **Example: Composition for a Layout System**
+
+### **Step 1: Define Small, Reusable Components**
+
+```javascript
+const Header = () => (
+  <header>
+    <h1>My App</h1>
+  </header>
+);
+const Footer = () => (
+  <footer>
+    <p>© 2024 My App</p>
+  </footer>
+);
+```
+
+### **Step 2: Create a Layout Component Using Composition**
+
+```javascript
+const Layout = ({ children }) => {
+  return (
+    <div style={{ border: "1px solid gray", padding: "10px" }}>
+      {children} {/* Allows any component to be inserted dynamically */}
+    </div>
+  );
+};
+```
+
+### **Step 3: Use Composition to Build a Page**
+
+```javascript
+const HomePage = () => {
+  return (
+    <Layout>
+      <Header />
+      <main>
+        <p>Welcome to my app!</p>
+      </main>
+      <Footer />
+    </Layout>
+  );
+};
+```
+
+### **How Composition Works in This Example**
+
+1. **`Layout` acts as a wrapper component**, controlling the overall structure.
+2. The `{children}` prop **allows dynamic content**, making the layout reusable.
+3. **`Header`, `main`, and `Footer`** are injected inside the `Layout`.
+
+---
+
+## **Using Composition with Props**
+
+Composition also allows passing components as props to modify behavior dynamically.
+
+```javascript
+const Card = ({ title, content, FooterComponent }) => {
+  return (
+    <div style={{ border: "1px solid black", padding: "10px", margin: "5px" }}>
+      <h2>{title}</h2>
+      <p>{content}</p>
+      {FooterComponent && <FooterComponent />}{" "}
+      {/* Dynamically insert a component */}
+    </div>
+  );
+};
+```
+
+### **Using the Card Component with Different Footers**
+
+```javascript
+const SimpleFooter = () => <p>Simple Footer</p>;
+const DetailedFooter = () => <p>More details here...</p>;
+
+const App = () => (
+  <div>
+    <Card
+      title="Card 1"
+      content="This is a basic card."
+      FooterComponent={SimpleFooter}
+    />
+    <Card
+      title="Card 2"
+      content="This is another card."
+      FooterComponent={DetailedFooter}
+    />
+  </div>
+);
+```
+
+---
+
+## **When to Use Composition?**
+
+✅ When **structuring layouts** (e.g., headers, sidebars, footers).  
+✅ When **passing dynamic UI** as props (e.g., modals, cards, and lists).  
+✅ When creating **highly reusable components**.
+
+## **When NOT to Use Composition?**
+
+❌ If a component is **simple and isolated**, no need for composition.  
+❌ If passing too many components **makes it complex to manage**.
+
+---
+
+### 🚀 **Happy Coding!**

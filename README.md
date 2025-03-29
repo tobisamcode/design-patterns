@@ -319,7 +319,7 @@ Use custom hooks when:
 
 ---
 
-## 5. Recursive Components in React
+## 5 - Recursive Components in React
 
 This document explains how recursive components work in React and provides an example of a recursive component used to display nested comments.
 

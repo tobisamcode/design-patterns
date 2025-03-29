@@ -2,9 +2,10 @@
 
 🚀 React Design Patterns is a GitHub repository that explores best practices and reusable patterns for building scalable, maintainable, and efficient React applications. It covers essential patterns like Higher-Order Components (HOCs), Render Props, Compound Components, Custom Hooks, and more. Ideal for developers looking to improve their React architecture and write cleaner, more modular code.
 
-## 1 -  Uncontrolled Components
+## 1 - Uncontrolled Components
 
 An uncontrolled component in React is a form input element that manages its own state rather than relying on React state. This means that React does not control the value of the input field; instead, the DOM itself handles it.
+
 ```js
 import { useRef } from "react";
 
@@ -25,7 +26,6 @@ function UncontrolledForm() {
 }
 
 export default UncontrolledForm;
-
 ```
 
 When to Use Uncontrolled Components?
@@ -33,13 +33,12 @@ When to Use Uncontrolled Components?
 - When integrating with third-party libraries that manipulate the DOM
 - When you don’t need real-time control of input values
 - When working with simple forms that don’t require state synchronization
-- 
-For more complex forms that need validation, default values, or conditional rendering, controlled components (using useState) are usually preferred.
-
+- For more complex forms that need validation, default values, or conditional rendering, controlled components (using useState) are usually preferred.
 
 ## 2 - Controlled Components
 
 In React, Controlled Components are those in which form’s data is handled by the component’s state. It takes its current value through props and makes changes through callbacks like onClick, onChange, etc. A parent component manages its own state and passes the new values as props to the controlled component.
+
 ```js
 import React, { useEffect, useState } from "react";
 
@@ -86,7 +85,6 @@ export default function ControlledForm() {
     </form>
   );
 }
-
 ```
 
 When to Use Controlled Components?
@@ -96,18 +94,18 @@ When to Use Controlled Components?
 - When handling dynamic forms
 - When integrating with React state management (Redux, Context API, etc.)
 
-
 For simple cases where React doesn't need to control the input, uncontrolled components (using ref) might be more efficient. 🚀
 
-
 ## 3 - Higher Order Components (HOCs)
+
 in React, Higher-Order Components (HOCs) are a pattern used for reusing component logic. A HOC is a function that takes a component as an argument and returns a new enhanced component.
 
 Example 👇
 
 This is an example of a Higher-Order Component (HOC) that enhances a wrapped component with fetching, updating, and resetting resource data from an API
 
-```include-updatable-resources.jsx```
+`include-updatable-resources.jsx`
+
 ```js
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -164,7 +162,8 @@ export const includeUpdatableResource = (
 
 usage 👇
 
-```user-form.jsx```
+`user-form.jsx`
+
 ```js
 import { includeUpdatableResource } from "./include-updatable-resource";
 
@@ -206,19 +205,18 @@ export const UserInfoForm = includeUpdatableResource(
   "/users/2",
   "user"
 );
-
 ```
 
 #### 🔥 Why Use This HOC?
+
 - ✅ Encapsulation of Data Fetching Logic – No need to write fetching logic in every component.
 - ✅ Reusability – Can be used for any resource (e.g., posts, comments).
 - ✅ Enhances Components Dynamically – Without modifying them directly.
 
-
-
 ## 4 - Custom Hooks in React
 
 ## What Are Custom Hooks?
+
 Custom hooks in React are **reusable functions** that encapsulate **stateful logic** and can be shared across multiple components. They allow you to extract common logic from components and reuse it, making your code more readable and maintainable.
 
 A **custom hook** is simply a **JavaScript function** that follows the **React hook naming convention**, meaning it **must start with** `use`, like `useCustomHook()`. It can use built-in hooks like `useState`, `useEffect`, etc.
@@ -226,45 +224,47 @@ A **custom hook** is simply a **JavaScript function** that follows the **React h
 ---
 
 ## Main Goal of Custom Hooks
+
 The **primary goal** of custom hooks is to **encapsulate and reuse complex logic** across multiple components. This helps in:
 
 ✅ **Code Reusability** → Avoid repeating the same logic in multiple components.  
 ✅ **Separation of Concerns** → Keep UI components clean by moving logic to hooks.  
 ✅ **Better Readability & Maintainability** → Easier to understand and manage.  
 ✅ **Avoiding Component Bloat** → Components remain focused on rendering, not handling logic.  
-✅ **Easy Testing** → Custom hooks can be tested independently.  
+✅ **Easy Testing** → Custom hooks can be tested independently.
 
 ---
 
 ## Example: Custom Hook (`useFetch`) for Fetching Data
+
 Instead of writing API fetching logic in multiple components, you can extract it into a **custom hook**.
 
 ```javascript
 import { useState, useEffect } from "react";
 
 function useFetch(url) {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error("Error fetching data");
-                const result = await response.json();
-                setData(result);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Error fetching data");
+        const result = await response.json();
+        setData(result);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-        fetchData();
-    }, [url]);
+    fetchData();
+  }, [url]);
 
-    return { data, loading, error };
+  return { data, loading, error };
 }
 
 export default useFetch;
@@ -273,23 +273,26 @@ export default useFetch;
 ---
 
 ## How to Use `useFetch` Hook in a Component
+
 ```javascript
 import React from "react";
 import useFetch from "./useFetch";
 
 function UsersList() {
-    const { data, loading, error } = useFetch("https://jsonplaceholder.typicode.com/users");
+  const { data, loading, error } = useFetch(
+    "https://jsonplaceholder.typicode.com/users"
+  );
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
-    return (
-        <ul>
-            {data.map(user => (
-                <li key={user.id}>{user.name}</li>
-            ))}
-        </ul>
-    );
+  return (
+    <ul>
+      {data.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
 }
 
 export default UsersList;
@@ -298,7 +301,9 @@ export default UsersList;
 ---
 
 ## When Should You Use Custom Hooks?
+
 Use custom hooks when:
+
 - You need to **reuse logic** across multiple components.
 - Your **component is getting too complex** with state and effects.
 - You want to **abstract API calls, authentication logic, form handling**, etc.
@@ -306,19 +311,120 @@ Use custom hooks when:
 ---
 
 ## Summary
+
 🔹 **Custom hooks** extract and reuse logic across multiple components.  
 🔹 They **must start with "use"** and can use other hooks inside.  
 🔹 Help with **reusability, separation of concerns, and maintainability**.  
-🔹 Example: `useFetch()` for API requests, `useLocalStorage()` for storage, `useDarkMode()` for themes, etc.  
+🔹 Example: `useFetch()` for API requests, `useLocalStorage()` for storage, `useDarkMode()` for themes, etc.
 
 ---
 
+## 5. Recursive Components in React
+
+This document explains how recursive components work in React and provides an example of a recursive component used to display nested comments.
+
+## What is a Recursive Component?
+
+A **recursive component** is a React component that calls itself until a base condition is met. This is useful for handling tree-like structures such as:
+
+- Nested comments
+- File directories
+- Menus with submenus
+
+## Example: Recursive Component for Nested Comments
+
+### **Step 1: Define Recursive Data Structure**
+
+```javascript
+const comments = [
+  {
+    id: 1,
+    text: "This is a comment",
+    replies: [
+      {
+        id: 2,
+        text: "This is a nested reply",
+        replies: [{ id: 3, text: "A deeper nested reply", replies: [] }],
+      },
+    ],
+  },
+];
+```
+
+Each comment has a `replies` field, which contains an array of more comments.
+
+### **Step 2: Create a Recursive Component**
+
+```javascript
+const Comment = ({ comment }) => {
+  return (
+    <div
+      style={{
+        marginLeft: "20px",
+        borderLeft: "1px solid gray",
+        paddingLeft: "10px",
+      }}
+    >
+      <p>{comment.text}</p>
+      {comment.replies.length > 0 && (
+        <div>
+          {comment.replies.map((reply) => (
+            <Comment key={reply.id} comment={reply} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+```
+
+### **Step 3: Render the Recursive Component**
+
+```javascript
+const CommentSection = ({ comments }) => {
+  return (
+    <div>
+      {comments.map((comment) => (
+        <Comment key={comment.id} comment={comment} />
+      ))}
+    </div>
+  );
+};
+
+// Usage:
+export default function App() {
+  return <CommentSection comments={comments} />;
+}
+```
+
+## How Recursion Works in This Component
+
+1. **Base Case:** If a comment has no `replies`, the recursion stops.
+2. **Recursive Case:** If a comment has replies, the `<Comment>` component calls itself.
+3. Each level of recursion **adds indentation**, showing a nested hierarchy.
+
+## Example Output
+
+```
+This is a comment
+  ├── This is a nested reply
+        ├── A deeper nested reply
+```
+
+Each recursive `<Comment>` component **renders itself inside itself** for replies.
+
+## When to Use Recursive Components
+
+✅ When dealing with **nested data** (e.g., JSON structures, tree-like lists).
+✅ When components have **self-similar** behavior at different levels.
+✅ When a **fixed iteration won’t work** (deeply nested structures).
+
+## When NOT to Use Recursion
+
+❌ If the data is **not deeply nested**, `.map()` might be enough.
+❌ If recursion causes **too many re-renders**, impacting performance.
+❌ If **state updates need tracking** (can become complex).
+
 ## License
+
 This project is licensed under the MIT License.
-
-
-
-
-
-
-

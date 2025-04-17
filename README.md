@@ -634,4 +634,136 @@ const App = () => {
 
 ---
 
-### 🚀 **Happy Coding!**
+---
+
+# 8. 🧠 What is the Observer Pattern?
+
+In **simple terms**:
+
+> One thing changes → other things get notified and react to it.
+
+Like:
+
+- Your phone gets a message → it vibrates, shows a notification, and plays a sound.
+- You're "observing" new messages.
+
+---
+
+### 🟦 In React?
+
+React components can "observe" events or state. When something changes (like a user clicking a button), **observers (components)** get updated.
+
+We can do this with event emitters like `mitt`.
+
+---
+
+## ✅ Simple Observer Pattern Example using `mitt`
+
+Let’s say:
+
+- One component **emits** a message (`ButtonComponent`)
+- Another component **observes** that message (`DisplayComponent`)
+
+---
+
+### 1. 🔌 Setup `mitt`
+
+Install it:
+
+```bash
+npm install mitt
+```
+
+Create an **event bus**:
+
+```js
+// eventBus.js
+import mitt from "mitt";
+
+const emitter = mitt();
+export default emitter;
+```
+
+---
+
+### 2. 🎯 Component that Emits (Subject)
+
+```jsx
+// ButtonComponent.jsx
+import emitter from "./eventBus";
+
+function ButtonComponent() {
+  const sendMessage = () => {
+    emitter.emit("message", "Hello from the button!");
+  };
+
+  return <button onClick={sendMessage}>Send Message</button>;
+}
+
+export default ButtonComponent;
+```
+
+---
+
+### 3. 👀 Component that Observes (Observer)
+
+```jsx
+// DisplayComponent.jsx
+import { useEffect, useState } from "react";
+import emitter from "./eventBus";
+
+function DisplayComponent() {
+  const [message, setMessage] = useState("No messages yet.");
+
+  useEffect(() => {
+    const handler = (msg) => {
+      setMessage(msg);
+    };
+
+    emitter.on("message", handler);
+
+    // Clean up on unmount
+    return () => {
+      emitter.off("message", handler);
+    };
+  }, []);
+
+  return <div>📩 Message: {message}</div>;
+}
+
+export default DisplayComponent;
+```
+
+---
+
+### 4. 🧩 Use in App
+
+```jsx
+// App.jsx
+import ButtonComponent from "./ButtonComponent";
+import DisplayComponent from "./DisplayComponent";
+
+function App() {
+  return (
+    <div>
+      <h1>Observer Pattern with mitt</h1>
+      <ButtonComponent />
+      <DisplayComponent />
+    </div>
+  );
+}
+
+export default App;
+```
+
+---
+
+## ✅ Recap (in kid-level terms 😄)
+
+- You press a button (emit event)
+- Another thing is listening (observer)
+- It reacts and updates
+
+This is the **Observer Pattern** in action — and `mitt` makes it clean and simple.
+
+Want me to expand this with multiple events or build a chat-like example?

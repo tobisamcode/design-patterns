@@ -23,6 +23,8 @@ export default function ControlledForm() {
   return (
     <form onSubmit={handleSubmit}>
       {error && <p>{error}</p>}
+
+      
       <input
         type="text"
         name="name"
